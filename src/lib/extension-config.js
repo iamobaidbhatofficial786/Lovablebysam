@@ -22,20 +22,26 @@ var INTERNAL_LICENSE_MODE = false;
 
 // STEP 2: License Server URLs — define ALL variable names the obfuscated
 // scripts may reference (GRINGOW_API_BASE, POWERKITS_API_BASE, LICENSE_API_BASE)
-// TODO: Replace "YOUR-VERCEL-DOMAIN.vercel.app" with your actual Vercel project domain after deploying the dashboard.
-var GRINGOW_API_BASE    = "https://YOUR-VERCEL-DOMAIN.vercel.app/api/public/license-verify";
-var POWERKITS_API_BASE  = "https://YOUR-VERCEL-DOMAIN.vercel.app/api/public/license-verify";
-var LICENSE_API_BASE    = "https://YOUR-VERCEL-DOMAIN.vercel.app/api/public/license-verify";
+var GRINGOW_API_BASE    = "https://by-pass-ai-by-sam.vercel.app/api/public/license-verify";
+var POWERKITS_API_BASE  = "https://by-pass-ai-by-sam.vercel.app/api/public/license-verify";
+var LICENSE_API_BASE    = "https://by-pass-ai-by-sam.vercel.app/api/public/license-verify";
 
 window.GRINGOW_API_BASE    = GRINGOW_API_BASE;
 window.POWERKITS_API_BASE  = POWERKITS_API_BASE;
 window.LICENSE_API_BASE    = LICENSE_API_BASE;
 
+// Declare global API key variables expected by the obfuscated code to prevent ReferenceErrors
+var GRINGOW_API_KEY     = "";
+var POWERKITS_API_KEY   = "";
+
+window.GRINGOW_API_KEY     = GRINGOW_API_KEY;
+window.POWERKITS_API_KEY   = POWERKITS_API_KEY;
+
 // STEP 3: Patch fetch() to add a 10-second timeout for license API calls.
 // This prevents the extension from hanging forever on "Loading..." if the
 // license server is slow or unreachable.
 (function () {
-  var _LICENSE_DOMAIN = 'YOUR-VERCEL-DOMAIN.vercel.app';
+  var _LICENSE_DOMAIN = 'by-pass-ai-by-sam.vercel.app';
   var _origFetch = window.fetch;
   window.fetch = function (url, opts) {
     var urlStr = String(url || '');
