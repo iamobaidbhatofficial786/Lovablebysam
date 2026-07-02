@@ -20,8 +20,45 @@
 
 var INTERNAL_LICENSE_MODE = false;
 
-// STEP 2: New Vercel License Server URL
-window.LICENSE_API_BASE = "https://by-pass-ai-by-sam.vercel.app/api/public/license-verify";
+// STEP 2: License Server URLs — define ALL variable names the obfuscated
+// scripts may reference (GRINGOW_API_BASE, POWERKITS_API_BASE, LICENSE_API_BASE)
+// TODO: Replace "YOUR-VERCEL-DOMAIN.vercel.app" with your actual Vercel project domain after deploying the dashboard.
+var GRINGOW_API_BASE    = "https://YOUR-VERCEL-DOMAIN.vercel.app/api/public/license-verify";
+var POWERKITS_API_BASE  = "https://YOUR-VERCEL-DOMAIN.vercel.app/api/public/license-verify";
+var LICENSE_API_BASE    = "https://YOUR-VERCEL-DOMAIN.vercel.app/api/public/license-verify";
+
+window.GRINGOW_API_BASE    = GRINGOW_API_BASE;
+window.POWERKITS_API_BASE  = POWERKITS_API_BASE;
+window.LICENSE_API_BASE    = LICENSE_API_BASE;
+
+// STEP 3: Patch fetch() to add a 10-second timeout for license API calls.
+// This prevents the extension from hanging forever on "Loading..." if the
+// license server is slow or unreachable.
+(function () {
+  var _LICENSE_DOMAIN = 'YOUR-VERCEL-DOMAIN.vercel.app';
+  var _origFetch = window.fetch;
+  window.fetch = function (url, opts) {
+    var urlStr = String(url || '');
+    // Only apply timeout to license server calls
+    if (urlStr.indexOf(_LICENSE_DOMAIN) !== -1) {
+      var controller = new AbortController();
+      var timer = setTimeout(function () { controller.abort(); }, 10000);
+      opts = Object.assign({}, opts || {}, { signal: controller.signal });
+      return _origFetch.call(this, url, opts).then(function (res) {
+        clearTimeout(timer);
+        return res;
+      }).catch(function (err) {
+        clearTimeout(timer);
+        // Return a graceful error response so the caller doesn't hang
+        return new Response(JSON.stringify({ ok: false, reason: 'network_timeout' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      });
+    }
+    return _origFetch.apply(this, arguments);
+  };
+})();
 
 // =============================================
 // Helper functions expected by sidepanel.js,
