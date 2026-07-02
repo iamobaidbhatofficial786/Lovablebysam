@@ -132,9 +132,9 @@ function pkParseUtcExpiry(v) {
 
 // Resolve human-readable license status
 function pkResolveLicenseStatus(data) {
-  if (!data) return 'active';
+  if (!data) return 'inactive';
   if (data.ql_license_cancelled || data.ql_license_status === 'cancelled') return 'cancelled';
-  return data.ql_license_status || 'active';
+  return data.ql_license_status || 'inactive';
 }
 
 // Patch a license data object with derived fields
