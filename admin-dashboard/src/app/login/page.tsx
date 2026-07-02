@@ -60,7 +60,7 @@ export default function LoginPage() {
               <Zap className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gradient">PowerKits</h1>
+              <h1 className="text-2xl font-bold text-gradient">ByPass AI</h1>
               <p className="text-xs text-gray-400">Admin Dashboard</p>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-xs text-gray-500 mt-8">
-          © 2024 PowerKits. All rights reserved.
+          © 2024 ByPass AI. All rights reserved.
         </p>
       </div>
     </div>

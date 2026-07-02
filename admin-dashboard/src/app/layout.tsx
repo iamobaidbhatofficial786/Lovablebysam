@@ -7,7 +7,7 @@ import { Header } from '@/components/layout/header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'PowerKits Admin - Licensing Dashboard',
+  title: 'ByPass AI - Admin Licensing Dashboard',
   description: 'Professional Chrome Extension Licensing System',
 }
 

@@ -32,7 +32,7 @@ export function Sidebar() {
           <Zap className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h1 className="text-lg font-bold text-gradient">PowerKits</h1>
+          <h1 className="text-lg font-bold text-gradient">ByPass AI</h1>
           <p className="text-xs text-gray-400">Admin Dashboard</p>
         </div>
       </div>
