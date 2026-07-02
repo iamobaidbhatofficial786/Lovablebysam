@@ -1,0 +1,99 @@
+{
+  "manifest_version": 3,
+  "name": "EliteBytes",
+  "version": "4.0",
+ "description": "Unlock unlimited prompts. Seamlessly manage and scale your Lovable projects without any usage restrictions.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "sidePanel",
+    "cookies",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://*.lovable.dev/*",
+    "https://api.lovable.dev/*",
+    "https://lovable.dev/*",
+    "https://lovable-api.com/*",
+    "https://*.lovable.app/*",
+    "https://project--f9fa1a7c-a550-404f-80a0-4f56223c4a9a.lovable.app/*",
+    "https://elitebytesai.lovable.app/*",
+    "https://text.pollinations.ai/*",
+    "https://*.vercel.app/*"
+  ],
+  "action": {
+    "default_title": "EliteBytes",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel/sidepanel.html"
+  },
+  "background": {
+    "service_worker": "src/background/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.lovable.dev/*",
+        "https://lovable.dev/*",
+        "https://*.lovable.app/*"
+      ],
+      "js": [
+        "src/content/prompt-guard.js",
+        "src/content/pageHook.js",
+        "src/content/fix-prompt-rewrite.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://*.lovable.dev/*",
+        "https://lovable.dev/*",
+        "https://api.lovable.dev/*",
+        "https://*.lovable.app/*"
+      ],
+      "js": [
+        "src/lib/extension-config.js",
+        "src/content/license-guard.js",
+        "src/content/content-bridge.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/content/prompt-guard.js",
+        "src/content/pageHook.js",
+        "src/content/content-lite.js",
+        "assets/logo-master-lovable.png",
+        "assets/logo-master-lovable-square.png",
+        "assets/icon16.png",
+        "assets/icon32.png",
+        "assets/icon48.png",
+        "assets/icon128.png"
+      ],
+      "matches": [
+        "https://*.lovable.dev/*",
+        "https://lovable.dev/*",
+        "https://*.lovable.app/*"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  }
+}

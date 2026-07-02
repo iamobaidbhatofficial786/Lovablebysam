@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.next/
+out/
+build/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vercel
+.vercel
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.vercel.local
+.env.vercel.production
+.env.production
+.env
+
+# System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
