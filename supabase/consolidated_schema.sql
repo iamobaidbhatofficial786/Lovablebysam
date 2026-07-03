@@ -130,12 +130,12 @@ alter table public.license_logs enable row level security;
 -- =========================================================================
 -- Default Credentials:
 -- Email: admin@bypassai.com
--- Password: admin123456 (Bcrypt hash: $2a$10$wK1GvCwq3LzEqwZix8b8KeQe5Z3P.hD4x6kQv41fN8T2V28YmC3gG)
+-- Password: admin123456 (Bcrypt hash: $2a$10$jjaXWTK.31RRm2kf3vZPv.p6xKgSSqcK9Pyz4R72bhCtDE9OWilZu)
 
 insert into public.admin_users (email, password_hash, role)
 values (
   'admin@bypassai.com',
-  '$2a$10$wK1GvCwq3LzEqwZix8b8KeQe5Z3P.hD4x6kQv41fN8T2V28YmC3gG',
+  '$2a$10$jjaXWTK.31RRm2kf3vZPv.p6xKgSSqcK9Pyz4R72bhCtDE9OWilZu',
   'admin'
 )
 on conflict (email) do nothing;
