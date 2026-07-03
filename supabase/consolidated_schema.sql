@@ -13,7 +13,7 @@ create table if not exists public.licenses (
   license_key text unique,                               -- Plaintext key (used by basic Vercel API, optional for Admin)
   customer_name text,
   customer_email text,
-  plan text check (plan in ('trial', 'monthly', 'yearly', 'lifetime')), -- Plan slug
+  plan text,                                             -- Plan slug
   plan_name text not null default 'pro',                 -- Plan display name (used by Admin Dashboard)
   max_devices integer not null default 1 check (max_devices between 1 and 20),
   activation_count integer not null default 0,           -- Number of active devices

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '../../../../lib/supabase';
-import { generateLicenseKey, sha256 } from '../../../../lib/crypto';
+import { generateLicenseKey, hashLicenseKey, allLicenseKeyHashes, normalizeLicenseKey } from '../../../../lib/crypto';
 import jwt from 'jsonwebtoken';
 
 class AuthError extends Error {
@@ -36,8 +36,11 @@ export async function GET(request: Request) {
       // If query looks like a key, search by its hash
       if (/^LPK-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(query.trim())
         || /^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(query.trim())) {
-        const hashedQuery = sha256(query.trim());
-        dbQuery = dbQuery.eq('license_key_hash', hashedQuery);
+        const normalizedQuery = normalizeLicenseKey(query);
+        const hashVariants = allLicenseKeyHashes(normalizedQuery);
+        const hashFilter = hashVariants.map((h) => `license_key_hash.eq.${h}`).join(',');
+        const keyFilter = `license_key.eq.${normalizedQuery}`;
+        dbQuery = dbQuery.or(`${hashFilter},${keyFilter}`);
       } else {
         // Search in plan_name or notes
         dbQuery = dbQuery.or(`plan_name.ilike.%${query}%,notes.ilike.%${query}%`);
@@ -68,11 +71,13 @@ export async function POST(request: Request) {
     }
 
     const rawKey = generateLicenseKey();
-    const hash = sha256(rawKey);
+    const normalizedKey = normalizeLicenseKey(rawKey);
+    const hash = hashLicenseKey(normalizedKey);
 
     const supabase = getSupabaseAdmin();
 
     const insertPayload: Record<string, unknown> = {
+      license_key: normalizedKey,
       license_key_hash: hash,
       plan_name: planLabel,
       max_devices: max_devices || 1,
@@ -95,12 +100,15 @@ export async function POST(request: Request) {
       .select('*')
       .single();
 
-    if (insertResult.error && /admin_message|support_url|support_telegram|updated_at/i.test(insertResult.error.message || '')) {
+    if (insertResult.error && /admin_message|support_url|support_telegram|updated_at|license_key/i.test(insertResult.error.message || '')) {
       const fallbackPayload = { ...insertPayload };
       delete fallbackPayload.admin_message;
       delete fallbackPayload.support_url;
       delete fallbackPayload.support_telegram;
       delete fallbackPayload.updated_at;
+      if (/license_key/i.test(insertResult.error.message || '')) {
+        delete fallbackPayload.license_key;
+      }
       insertResult = await supabase
         .from('licenses')
         .insert(fallbackPayload)
