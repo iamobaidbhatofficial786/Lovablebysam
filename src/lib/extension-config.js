@@ -22,9 +22,9 @@ var INTERNAL_LICENSE_MODE = false;
 
 // STEP 2: License Server URLs — define ALL variable names the obfuscated
 // scripts may reference (GRINGOW_API_BASE, POWERKITS_API_BASE, LICENSE_API_BASE)
-var GRINGOW_API_BASE    = "https://by-pass-ai-by-sam.vercel.app/api/public/license-verify";
-var POWERKITS_API_BASE  = "https://by-pass-ai-by-sam.vercel.app/api/public/license-verify";
-var LICENSE_API_BASE    = "https://by-pass-ai-by-sam.vercel.app/api/public/license-verify";
+var GRINGOW_API_BASE    = "https://lovablebysam-18gcpvrqc-license-server.vercel.app/api/public/license-verify";
+var POWERKITS_API_BASE  = "https://lovablebysam-18gcpvrqc-license-server.vercel.app/api/public/license-verify";
+var LICENSE_API_BASE    = "https://lovablebysam-18gcpvrqc-license-server.vercel.app/api/public/license-verify";
 
 window.GRINGOW_API_BASE    = GRINGOW_API_BASE;
 window.POWERKITS_API_BASE  = POWERKITS_API_BASE;
@@ -41,7 +41,7 @@ window.POWERKITS_API_KEY   = POWERKITS_API_KEY;
 // This prevents the extension from hanging forever on "Loading..." if the
 // license server is slow or unreachable.
 (function () {
-  var _LICENSE_DOMAIN = 'by-pass-ai-by-sam.vercel.app';
+  var _LICENSE_DOMAIN = 'lovablebysam-18gcpvrqc-license-server.vercel.app';
   var _origFetch = window.fetch;
   window.fetch = function (url, opts) {
     var urlStr = String(url || '');
