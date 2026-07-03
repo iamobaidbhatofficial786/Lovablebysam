@@ -20,6 +20,7 @@ export async function POST(request: Request) {
       .limit(1);
 
     if (error || !users || users.length === 0) {
+      console.error('[Admin Login DB Query Error]:', { error, usersFetched: users });
       return NextResponse.json({ success: false, error: 'Authentication failed. Database connection error or no admin user found.' }, { status: 401 });
     }
 
